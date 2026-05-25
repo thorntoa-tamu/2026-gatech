@@ -1,0 +1,31 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "ML4FP 2026"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: pages/overview.md
+        text: Program Overview
+      - href: pages/schedule.md
+        text: Lectures & Tutorials
+      - href: pages/speakers.qmd
+      - href: pages/code-of-conduct.md
+    right:
+      - icon: github
+        href: https://github.com/ml4fp/2026-gatech
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: solar
+    css: style.css
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    link-external-icon: true
+    link-external-newwindow: true

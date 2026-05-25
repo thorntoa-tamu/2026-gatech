@@ -1,0 +1,79 @@
+[
+  {
+    "objectID": "pages/schedule.html",
+    "href": "pages/schedule.html",
+    "title": "Lecture and Tutorial Sessions",
+    "section": "",
+    "text": "The full schedule with speaker info is avilable on the indico timetable page.\n  Go to Indico timetable  \n\n\n\n\n\n\n\n\n\n\nTime\nSession Title\nSpeaker(s)\n\n\n\n\n8:45\nWelcome Presentation\nAishik Ghosh, Melissa Quinnan\n\n\n09:00\nIntroduction to Machine Learning: Part I\nMelissa Quinnan\n\n\n10:30\nCoffee Break\n—\n\n\n11:00\nTutorial: Intro to Neural Networks I\nElham E Khoda, Roger Huang\n\n\n12:30\nLunch\n—\n\n\n13:30\nIntroduction to Machine Learning: Part II\nDennis Noll\n\n\n15:00\nCoffee Break\n—\n\n\n15:30\nTutorial: Intro to Neural Networks II\nElham E Khoda, Roger Huang\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTime\nSession Title\nSpeaker(s)\n\n\n\n\n09:00\nOverview of ML in Collider Physics\nAishik Ghosh\n\n\n09:45\nOverview of ML in Neutrino Physics\nYifan Chen\n\n\n10:30\nCoffee Break\n—\n\n\n11:00\nDifferentiable Programming\nYifan Chen\n\n\n12:30\nLunch\n—\n\n\n13:30\nSimulation-based Inference: Part I (Lecture)\nTae Park, Sean Benevedes, Aishik Ghosh\n\n\n15:00\nCoffee Break\n—\n\n\n15:30\nSimulation-based Inference: Part II (Tutorial)\nTae Park, Sean Benevedes, Aishik Ghosh\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTime\nSession Title\nSpeaker(s)\n\n\n\n\n09:00\nGenerative Models: Part I\nSofia Schweitzer\n\n\n10:30\nCoffee Break\n—\n\n\n11:00\nGenerative Models: Part II\nSofia Schweitzer\n\n\n12:30\nLunch\n—\n\n\n13:30\nAnomaly Detection\nMelissa Quinnan\n\n\n14:30\nCoffee Break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTime\nSession Title\nSpeaker(s)\n\n\n\n\n09:00\nTransformers: Part I\nAaron Wang\n\n\n10:30\nCoffee Break\n—\n\n\n11:00\nTransformers: Part II\nAaron Wang\n\n\n12:30\nLunch\n—\n\n\n13:30\nApplication: Muon Collider BIB\nAngira Rastogi, SamSam Ferraro\n\n\n15:00\nCoffee Break\n—\n\n\n15:30\nCareer Panel\n\n\n\n\n\n\n\n\n18:00\nMeet and Greet\n—\n\n\n21:30\nDinner @\n—\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTime\nSession Title\nSpeaker(s)\n\n\n\n\n09:00\nEfficient ML\nElham E Khoda\n\n\n10:30\nCoffee Break\n\n\n\n11:00\nParallel Sessions (ATLAS / CMS)\n—\n\n\n12:30\nLunch\n—\n\n\n13:30\nParallel Sessions (ATLAS / CMS)\n\n\n\n15:00\nCoffee Break\n—\n\n\n\n15:30 | Closeout Session: Recap and Networking | Aishik Ghosh, Elham E Khoda, Dennis Noll, Melissa Quinnan, Yifan Chen |"
+  },
+  {
+    "objectID": "pages/schedule.html#day-1-monday-june-1",
+    "href": "pages/schedule.html#day-1-monday-june-1",
+    "title": "Lecture and Tutorial Sessions",
+    "section": "",
+    "text": "Time\nSession Title\nSpeaker(s)\n\n\n\n\n8:45\nWelcome Presentation\nAishik Ghosh, Melissa Quinnan\n\n\n09:00\nIntroduction to Machine Learning: Part I\nMelissa Quinnan\n\n\n10:30\nCoffee Break\n—\n\n\n11:00\nTutorial: Intro to Neural Networks I\nElham E Khoda, Roger Huang\n\n\n12:30\nLunch\n—\n\n\n13:30\nIntroduction to Machine Learning: Part II\nDennis Noll\n\n\n15:00\nCoffee Break\n—\n\n\n15:30\nTutorial: Intro to Neural Networks II\nElham E Khoda, Roger Huang"
+  },
+  {
+    "objectID": "pages/schedule.html#day-2-tuesday-june-2",
+    "href": "pages/schedule.html#day-2-tuesday-june-2",
+    "title": "Lecture and Tutorial Sessions",
+    "section": "",
+    "text": "Time\nSession Title\nSpeaker(s)\n\n\n\n\n09:00\nOverview of ML in Collider Physics\nAishik Ghosh\n\n\n09:45\nOverview of ML in Neutrino Physics\nYifan Chen\n\n\n10:30\nCoffee Break\n—\n\n\n11:00\nDifferentiable Programming\nYifan Chen\n\n\n12:30\nLunch\n—\n\n\n13:30\nSimulation-based Inference: Part I (Lecture)\nTae Park, Sean Benevedes, Aishik Ghosh\n\n\n15:00\nCoffee Break\n—\n\n\n15:30\nSimulation-based Inference: Part II (Tutorial)\nTae Park, Sean Benevedes, Aishik Ghosh"
+  },
+  {
+    "objectID": "pages/schedule.html#day-3-wednesday-june-3",
+    "href": "pages/schedule.html#day-3-wednesday-june-3",
+    "title": "Lecture and Tutorial Sessions",
+    "section": "",
+    "text": "Time\nSession Title\nSpeaker(s)\n\n\n\n\n09:00\nGenerative Models: Part I\nSofia Schweitzer\n\n\n10:30\nCoffee Break\n—\n\n\n11:00\nGenerative Models: Part II\nSofia Schweitzer\n\n\n12:30\nLunch\n—\n\n\n13:30\nAnomaly Detection\nMelissa Quinnan\n\n\n14:30\nCoffee Break"
+  },
+  {
+    "objectID": "pages/schedule.html#day-4-thursday-june-4",
+    "href": "pages/schedule.html#day-4-thursday-june-4",
+    "title": "Lecture and Tutorial Sessions",
+    "section": "",
+    "text": "Time\nSession Title\nSpeaker(s)\n\n\n\n\n09:00\nTransformers: Part I\nAaron Wang\n\n\n10:30\nCoffee Break\n—\n\n\n11:00\nTransformers: Part II\nAaron Wang\n\n\n12:30\nLunch\n—\n\n\n13:30\nApplication: Muon Collider BIB\nAngira Rastogi, SamSam Ferraro\n\n\n15:00\nCoffee Break\n—\n\n\n15:30\nCareer Panel\n\n\n\n\n\n\n\n\n18:00\nMeet and Greet\n—\n\n\n21:30\nDinner @\n—"
+  },
+  {
+    "objectID": "pages/schedule.html#day-5-friday-june-5",
+    "href": "pages/schedule.html#day-5-friday-june-5",
+    "title": "Lecture and Tutorial Sessions",
+    "section": "",
+    "text": "Time\nSession Title\nSpeaker(s)\n\n\n\n\n09:00\nEfficient ML\nElham E Khoda\n\n\n10:30\nCoffee Break\n\n\n\n11:00\nParallel Sessions (ATLAS / CMS)\n—\n\n\n12:30\nLunch\n—\n\n\n13:30\nParallel Sessions (ATLAS / CMS)\n\n\n\n15:00\nCoffee Break\n—\n\n\n\n15:30 | Closeout Session: Recap and Networking | Aishik Ghosh, Elham E Khoda, Dennis Noll, Melissa Quinnan, Yifan Chen |"
+  },
+  {
+    "objectID": "pages/speakers.html",
+    "href": "pages/speakers.html",
+    "title": "Speakers",
+    "section": "",
+    "text": "Speakers\n\n\n\nAaron Wang\nUniversity of Illinois, Chicago\n\n\n\nAishik Ghosh\nGeorgia Institute of Technology\n\n\n\nAngira Rastogi\nLawrence Berkely National Laboratory\n\n\n\nChristopher McGrady\nUniversity of Notre Dame\n\n\n\nDennis Noll\nStanford University\n\n\n\nElham E Khoda\nUniversity of British Columbia\n\n\n\nMelissa Quinnan\nUniversity of California, San Diego\n\n\n\nRoger Huang\nLawrence Berkely National Laboratory\n\n\n\nSamuel Ferraro\nHarvard University\n\n\n\nSofia Schweitzer\nRutgers University\n\n\n\nYifan Chen\nSLAC National Accelerator Laboratory"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ML4FP 2026",
+    "section": "",
+    "text": "The Machine Learning for Fundamental Physics (ML4FP) School 2026 will be hosted at the Georgia Institute of Technology. All talks and tutorials will be given in person, and participants can register to participate in-person or virtually. After two highly successful US ATLAS Machine Learning (ML) training events in 2022 and 2023, followed by two successful ML4FP event in 2024 and 2025 we are excited to continue this pattern. This event remains open to all particle physicists. Similar to last year, this year the program is open to all of particle physics.\nThe US ATLAS ATC program supports domestic travel and accommodation for US ATLAS early career researchers. Additional funding from the DOE / ORNL supports domestic travel for other early career researchers. These participants will be offered lodging in Georgia Tech students apartments located in Midtown Atlanta. NERSC will provide training accounts with GPU nodes for registered participants.\n\n\n  Link to the Indico page"
+  },
+  {
+    "objectID": "pages/overview.html",
+    "href": "pages/overview.html",
+    "title": "Program Overview",
+    "section": "",
+    "text": "Program Overview\nWe will introduce fundamental concepts of machine learning accompanied by hands-on tutorials of the essential open-source ML packages. The program will cover particle physics specific use cases with lots of hands-on examples. There will be invited talks from veteran ML experts in HEP who have previously developed and deployed ML for different tasks in experiments.\nAttendees can expect to gain an overview of the range of current and upcoming ML applications in HEP, and also learn some of the particle physics specific tricks that an ML practitioner picks up from experience. We will try to address the typical ML questions that often come up in analysis meetings.\nTentative topics to be covered (many will include a hands-on component):\n\nIntroduction to Machine Learning\nIntroduction to standard open-source ML packages like Scikit-learn, XGBoost, Keras and Pytorch\nOverview of ML in particle physics\nPractitioners guide to handling particle physics datasets\nGenerative Models\nNeural Simulation-Based Inference\nUncertainty treatment\nExploiting symmetries in physics data\nTransformers and their applications in particle physics\nDifferentiable Programming\nDeploying NNs on FPGA: Quantization, Model prunnning and compression, hls4ml"
+  },
+  {
+    "objectID": "pages/code-of-conduct.html",
+    "href": "pages/code-of-conduct.html",
+    "title": "Code of Conduct",
+    "section": "",
+    "text": "ML4FP is devoted to creating a safe, friendly, and welcoming environment. We expect your behaviors to contribute to this. As such, we have a set of guidelines to follow when participating in this community:\n\nBe kind and courteous to others.\nUse welcoming and inclusive language.\nShow empathy for other users.\nBe respectful of different viewpoints and opinions.\nKeep criticism structured, constructive, and where it is wanted. Likewise accept any such criticism gracefully.\n\n\n\n\n⛔ Trolling, spamming, flaming, etc. will not be permitted.\n⛔ Hate speech such as racism, sexism, homophobia, transphobia, ableism, etc. is completely unacceptable and will not be tolerated.\n⛔ Private harassment, including the above, will also not be tolerated. If you feel this is happening to you, please reach out to one of us. We want this community to feel safe for its users.\n\nThese are standards and moderation guidelines, and as such are followed in spirit, not by letter. If you feel these are being violated, or someone is otherwise making the community unsafe, unwelcome, or uncomfortable, we encourage you to contact one of the organizers.\n\nYou may be kicked or permanently banned if you fail to follow the code of conduct and rules"
+  },
+  {
+    "objectID": "pages/code-of-conduct.html#this-is-not-a-place-for",
+    "href": "pages/code-of-conduct.html#this-is-not-a-place-for",
+    "title": "Code of Conduct",
+    "section": "",
+    "text": "⛔ Trolling, spamming, flaming, etc. will not be permitted.\n⛔ Hate speech such as racism, sexism, homophobia, transphobia, ableism, etc. is completely unacceptable and will not be tolerated.\n⛔ Private harassment, including the above, will also not be tolerated. If you feel this is happening to you, please reach out to one of us. We want this community to feel safe for its users.\n\nThese are standards and moderation guidelines, and as such are followed in spirit, not by letter. If you feel these are being violated, or someone is otherwise making the community unsafe, unwelcome, or uncomfortable, we encourage you to contact one of the organizers.\n\nYou may be kicked or permanently banned if you fail to follow the code of conduct and rules"
+  }
+]

@@ -1,0 +1,21 @@
+
+
+.speaker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.speaker {
+  text-align: center;
+}
+
+.speaker-img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}

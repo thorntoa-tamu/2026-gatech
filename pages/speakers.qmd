@@ -1,0 +1,88 @@
+
+# Speakers
+
+::: {.speaker-grid}
+
+
+::: {.speaker}
+![](assets/img/speakers/aaron.jpg){.speaker-img}
+
+**Aaron Wang**    
+University of Illinois, Chicago
+:::
+
+::: {.speaker}
+![](assets/img/speakers/aishik.jpg){.speaker-img}
+
+**Aishik Ghosh**  
+Georgia Institute of Technology
+:::
+
+::: {.speaker}
+![](assets/img/speakers/angira.jpg){.speaker-img}
+
+**Angira Rastogi**    
+Lawrence Berkely National Laboratory
+:::
+
+::: {.speaker}
+![](assets/img/speakers/eddie.jpg){.speaker-img}
+
+**Christopher McGrady**   
+University of Notre Dame
+:::
+
+::: {.speaker}
+![](assets/img/speakers/dennis.jpg){.speaker-img}
+
+**Dennis Noll**   
+Stanford University
+:::
+
+::: {.speaker}
+![](assets/img/speakers/elham.jpg){.speaker-img}
+
+**Elham E Khoda**   
+University of British Columbia
+:::
+
+::: {.speaker}
+![](assets/img/speakers/melissa.jpg){.speaker-img}
+
+**Melissa Quinnan**    
+University of California, San Diego
+:::
+
+::: {.speaker}
+![](assets/img/speakers/roger.jpg){.speaker-img}
+
+**Roger Huang**    
+Lawrence Berkely National Laboratory
+:::
+
+::: {.speaker}
+![](assets/img/speakers/samuel.jpg){.speaker-img}
+
+**Samuel Ferraro**  
+Harvard University
+:::
+
+::: {.speaker}
+![](assets/img/speakers/sofia.jpg){.speaker-img}
+
+**Sofia Schweitzer**    
+Rutgers University
+:::
+
+::: {.speaker}
+![](assets/img/speakers/yifan.jpg){.speaker-img}
+
+**Yifan Chen**     
+SLAC National Accelerator Laboratory
+:::
+
+
+
+
+
+
