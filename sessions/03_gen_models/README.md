@@ -1,2 +1,2 @@
 
-# Day 2: Generative Models
+# Day 3: Generative Models
