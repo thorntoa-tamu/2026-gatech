@@ -1,2 +1,2 @@
 
-# Day 1: Intorduction to Machine Learning
+# Day 1: Introduction to Machine Learning
