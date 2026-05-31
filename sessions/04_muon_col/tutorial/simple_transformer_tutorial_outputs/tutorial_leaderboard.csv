@@ -1,0 +1,3 @@
+name,kind,test_auc,test_bib_rej_at_sig_eff_0p80,test_bib_rej_at_sig_eff_0p90,test_bib_rej_at_sig_eff_0p95,model_path
+BDT reference,BDT,0.8477397818187254,0.7109228891825343,0.5627017308233867,0.45123439406739885,/global/cfs/cdirs/m5197/sferrar2/ML4FPS/REAL_Jupyter/2026-gatech/sessions/04_muon_col/tutorial/bdt_baseline_outputs/bdt_gradient_boosting.joblib
+SimplePixelTransformer reference,Transformer,0.8251626869722288,0.6547379214233622,0.5133548512878279,0.43285748326581897,

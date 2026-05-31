@@ -1,0 +1,2 @@
+name,kind,test_auc,test_bib_rej_at_sig_eff_0p80,test_bib_rej_at_sig_eff_0p90,test_bib_rej_at_sig_eff_0p95,model_path,model_size_bytes,fom
+BDT,BDT,0.8477397818187254,0.7109228891825343,0.5627017308233867,0.45123439406739885,/global/cfs/cdirs/m5197/sferrar2/ML4FPS/REAL_Jupyter/2026-gatech/sessions/04_muon_col/tutorial/bdt_baseline_outputs/bdt_gradient_boosting.joblib,270740,0.15604815482010298

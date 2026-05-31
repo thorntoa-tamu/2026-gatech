@@ -202,6 +202,45 @@ def plot_leaderboard(entries):
 
 
 # ---------------------------------------------------------------------------
+#  BDT / leaderboard helpers
+# ---------------------------------------------------------------------------
+
+def build_feature_matrix(data, feature_names=None):
+    """Build a fixed-size BDT matrix from load_pixel_data(...) output."""
+    if feature_names is None:
+        feature_names = data['feature_keys']
+    feature_names = list(feature_names)
+    X = np.column_stack([data['features'][name] for name in feature_names])
+    return np.nan_to_num(X.astype('float32'), nan=0.0, posinf=0.0, neginf=0.0)
+
+
+def bib_rejection_at_signal_efficiency(y_true, y_scores, sig_eff):
+    """Return background rejection at a chosen signal efficiency."""
+    y_true = np.asarray(y_true).astype(int)
+    y_scores = np.asarray(y_scores)
+    sig_scores = y_scores[y_true == 1]
+    bg_scores = y_scores[y_true == 0]
+    threshold = np.quantile(sig_scores, 1.0 - sig_eff)
+    bib_eff = np.mean(bg_scores >= threshold)
+    return 1.0 - bib_eff
+
+
+def classifier_summary_row(name, kind, y_true, y_scores, model_path=None):
+    """Create a compact row for CSV leaderboards."""
+    row = {
+        'name': name,
+        'kind': kind,
+        'test_auc': metrics.roc_auc_score(y_true, y_scores),
+        'test_bib_rej_at_sig_eff_0p80': bib_rejection_at_signal_efficiency(y_true, y_scores, 0.80),
+        'test_bib_rej_at_sig_eff_0p90': bib_rejection_at_signal_efficiency(y_true, y_scores, 0.90),
+        'test_bib_rej_at_sig_eff_0p95': bib_rejection_at_signal_efficiency(y_true, y_scores, 0.95),
+    }
+    if model_path is not None:
+        row['model_path'] = str(model_path)
+    return row
+
+
+# ---------------------------------------------------------------------------
 #  Training
 # ---------------------------------------------------------------------------
 
@@ -380,12 +419,14 @@ def benchmark_bdt(bdt, auc):
     """Compute and print BDT benchmark metrics. Returns dict."""
     bdt_bytes = len(pickle.dumps(bdt))
     fom = auc / np.log10(max(bdt_bytes, 1))
+    n_estimators = getattr(bdt, 'n_estimators_', getattr(bdt, 'n_estimators', 'n/a'))
+    max_depth = getattr(bdt, 'max_depth', 'n/a')
 
     print(f"\n{'='*50}")
     print(f" BDT Benchmark")
     print(f"{'='*50}")
-    print(f"  Trees:           {bdt.n_estimators:>10}")
-    print(f"  Max depth:       {bdt.max_depth:>10}")
+    print(f"  Trees:           {str(n_estimators):>10}")
+    print(f"  Max depth:       {str(max_depth):>10}")
     print(f"  Serialized size: {bdt_bytes:>10,} bytes  ({bdt_bytes/1024:.1f} KB)")
     print(f"  AUC:             {auc:>10.4f}")
     print(f"  FoM:             {fom:>10.4f}")
