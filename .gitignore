@@ -1,3 +1,10 @@
 /.quarto/
 **/*.quarto_ipynb
 .DS_Store
+*/.ipynb_checkpoints
+*/__pycache__
+*/lightning_logs
+**/.ipynb_checkpoints
+**/__pycache__
+**/lightning_logs
+sessions/02_sbi/nsbi_tutorial.egg-info/
