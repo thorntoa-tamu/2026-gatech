@@ -117,8 +117,8 @@ class BalancedDataset(Dataset):
         # balanced weights
         w_numerator = events_numerator.weights.to_numpy()
         w_denominator = events_denominator.weights.to_numpy()
-        w_numerator /= w_numerator.sum()
-        w_denominator /= w_denominator.sum()
+        np.divide(w_numerator, w_numerator.sum())
+        np.divide(w_denominator, w_denominator.sum())
         self.w = np.concatenate([w_numerator, w_denominator])
 
         # numerator = signal = 1, denominator = background = 0
