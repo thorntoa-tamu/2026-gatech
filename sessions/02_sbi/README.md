@@ -2,7 +2,7 @@
 
 This tutorial covers the basic steps in an NSBI analysis. 
 
-Networks are trained using the CARL teachnique outlined in [1805.00020](https://arxiv.org/abs/1805.00020) and mimics the analysis framework of [2412.01600](https://arxiv.org/abs/2412.01600v1). There are four Jupyter notebooks in `tutorials` which walk through:
+Networks are trained using the CARL teachnique outlined in [1907.10621](https://arxiv.org/abs/1907.10621) and mimics the analysis framework of [2412.01600](https://arxiv.org/abs/2412.01600v1). There are four Jupyter notebooks in `tutorials` which walk through:
 
 1. Looking at various kinematics to be used for training
 2. Preparing the CARL training framework
@@ -13,7 +13,7 @@ This exercise also includes a rudimentary training framework whose CLI command i
 
 ## Running the Turorial
 
-This tutorial was written and designed to be executed on the [NERSC Jupyter Hub](https://jupyter.nersc.gov/hub/login?next=%2Fhub%2Fhome). All data used in these notbooks can be found in `/global/cfs/cdirs/ntrain6/NSBIData`. To install the necessary modules, open a virtual terminal on the NERC Jupyter Hub and run 
+This tutorial was written and designed to be executed on the [NERSC Jupyter Hub](https://jupyter.nersc.gov/hub/login?next=%2Fhub%2Fhome). All data used in these notbooks can be found in `/global/cfs/cdirs/ntrain6/NSBIData`. To install the necessary modules, open a virtual terminal on the [NERC Jupyter Hub](https://jupyter.nersc.gov/hub/login?next=%2Fhub%2Fhome) and run 
 
 ```sh
 . setupTutorialEnv.sh
