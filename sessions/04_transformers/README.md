@@ -32,7 +32,9 @@ From the repository root:
 ```bash
 ./install.sh                 # creates ./.venv and installs everything
 source .venv/bin/activate    # activate the environment
-jupyter lab                  # open the notebooks in tutorial/
+
+# if on laptop
+#jupyter lab                  # open the notebooks in tutorial/ 
 ```
 
 `install.sh` creates a virtual environment in `./.venv`, installs every package
