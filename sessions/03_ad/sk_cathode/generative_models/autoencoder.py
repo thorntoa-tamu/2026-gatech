@@ -1,5 +1,3 @@
-# wrapping the neural network classifer in a sklearn-like API
-
 import numpy as np
 import torch
 import torch.nn as nn
@@ -14,27 +12,30 @@ from sklearn.utils import class_weight
 from tqdm import tqdm
 
 
-class NeuralNetwork(nn.Module):
+class AutoencoderModel(nn.Module):
     """A PyTorch module implementing a simple feed-forward neural network.
     """
-    def __init__(self, layers=[64, 64, 64], n_inputs=4):
+
+    def __init__(self, layers=[32, 16, 4, 16, 32], n_inputs=10):
         super().__init__()
 
         self.layers = []
-        for nodes in layers:
+        for i, nodes in enumerate(layers):
             self.layers.append(nn.Linear(n_inputs, nodes))
-            self.layers.append(nn.ReLU())
+
+            # Don't add activation function for last layer
+            if (i < (len(layers) - 1)):
+                self.layers.append(nn.ReLU())
             n_inputs = nodes
-        self.layers.append(nn.Linear(n_inputs, 1))
-        self.layers.append(nn.Sigmoid())
+
         self.model_stack = nn.Sequential(*self.layers)
 
     def forward(self, X):
         return self.model_stack(X)
 
 
-class NeuralNetworkClassifier(BaseEstimator):
-    """Neural network classifier based on torch but wrapped such that it
+class Autoencoder(BaseEstimator):
+    """An autoencoder based on torch but wrapped such that it
     mimicks the scikit-learn API, using numpy arrays as inputs and outputs.
 
     Parameters
@@ -46,7 +47,7 @@ class NeuralNetworkClassifier(BaseEstimator):
         Whether to load the model from save_path.
     n_inputs : int, default=4
         Number of input features.
-    layers : list, default=[64, 64, 64]
+    layers : list, default=[8, 32, 16, 2, 16, 32, 8]
         List of integers, specifying the number of nodes in each layer.
     lr : float, default=0.001
         Learning rate during training.
@@ -68,31 +69,39 @@ class NeuralNetworkClassifier(BaseEstimator):
         this is treated as an upper limit. Then also None can be provided,
         in which case the training will continue until early stopping
         is triggered.
-    use_class_weights : bool, default=True
-        Whether to use class weights during training.
     verbose : bool, default=False
         Whether to print progress during training.
     """
 
-    def __init__(self, save_path=None, load=False, n_inputs=4,
-                 layers=[64, 64, 64], lr=0.001, early_stopping=False,
-                 patience=10, no_gpu=False, val_split=0.2, batch_size=128,
-                 epochs=100, use_class_weights=True, verbose=False):
+    def __init__(
+            self,
+            save_path=None,
+            load=False,
+            n_inputs=8,
+            layers=[8, 32, 16, 2, 16, 32, 8],
+            lr=0.001,
+            early_stopping=False,
+            patience=10,
+            no_gpu=False,
+            val_split=0.2,
+            batch_size=128,
+            epochs=100,
+            verbose=False):
 
         self.save_path = save_path
         if save_path is not None:
-            self.clsf_model_path = join(save_path, "CLSF_models/")
+            self.clsf_model_path = join(save_path, "AE_models/")
         else:
             self.clsf_model_path = None
-        self.load = load
 
-        self.n_inputs = n_inputs
         self.layers = layers
+        self.n_inputs = n_inputs
         self.lr = lr
-        self.no_gpu = no_gpu
-        self.model = NeuralNetwork(layers, n_inputs=n_inputs)
+
+        self.model = AutoencoderModel(layers, n_inputs=n_inputs)
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
-        self.loss = F.binary_cross_entropy
+        self.loss = F.mse_loss
+        self.no_gpu = no_gpu
         self.device = torch.device("cuda:0" if torch.cuda.is_available()
                                    and not no_gpu else "cpu")
         self.early_stopping = early_stopping
@@ -100,7 +109,6 @@ class NeuralNetworkClassifier(BaseEstimator):
         self.val_split = val_split
         self.batch_size = batch_size
         self.epochs = epochs
-        self.use_class_weights = use_class_weights
         self.verbose = verbose
 
         self.model.to(self.device)
@@ -108,29 +116,88 @@ class NeuralNetworkClassifier(BaseEstimator):
         # defaulting to eval mode, switching to train mode in fit()
         self.model.eval()
 
+        self.load = load
+
         if load:
             self.load_best_model()
 
-    def predict(self, X):
-        """Predicts the class labels for the provided data.
+    def predict_proba(self, X, m=None):
+        """Runs input data through the model and computes reconstruction
+        error (MSE loss) which
+        can be used as an anomaly score
 
         Parameters
         ----------
         X : numpy.ndarray
             Input data.
+        m : numpy.ndarray, optional
+            Not implemented for this model.
+
+        Returns
+        -------
+        reco_error : numpy.ndarray
+            Reconstruction erorr (MSE loss) on each example
+        """
+
+        if m is not None:
+            raise NotImplementedError(
+                "Conditional data not implemented for Autoencoder")
+
+        reco = self.transform(X, m=m)
+        reco_error = np.sum((X - reco)**2, axis=-1)
+
+        return reco_error
+
+    def predict_log_proba(self, X, m=None):
+        """Runs input data through the model and computes the logarithmic
+        reconstruction error (MSE loss) which can be used as an anomaly score
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Input data.
+        m : numpy.ndarray, optional
+            Not implemented for this model.
+
+        Returns
+        -------
+        reco_error : numpy.ndarray
+            Log reconstruction erorr (MSE loss) on each example
+        """
+
+        if m is not None:
+            raise NotImplementedError(
+                "Conditional data not implemented for Autoencoder")
+
+        return np.log(self.predict_proba(X))
+
+    def transform(self, X, m=None):
+        """Compresses and decompresses the input data
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Input data.
+        m : numpy.ndarray, optional
+            Not implemented for this model.
 
         Returns
         -------
         prediction : numpy.ndarray
-            Predicted class labels.
+            Output array
         """
+
+        if m is not None:
+            raise NotImplementedError(
+                "Conditional data not implemented for Autoencoder")
+
         with torch.no_grad():
             self.model.eval()
             X = torch.from_numpy(X).type(torch.FloatTensor).to(self.device)
             prediction = self.model.forward(X).detach().cpu().numpy()
         return prediction
 
-    def fit(self, X, y, X_val=None, y_val=None,
+    def fit(self, X, m=None, X_val=None, m_val=None,
             sample_weight=None, sample_weight_val=None):
         """Fits (trains) the model to the provided data.
 
@@ -138,15 +205,15 @@ class NeuralNetworkClassifier(BaseEstimator):
         ----------
         X : numpy.ndarray
             Input data.
-        y : numpy.ndarray
-            Target data.
+        m : numpy.ndarray, optional
+            Not implemented for this model.
         X_val : numpy.ndarray, optional
             Validation input data.
-        y_val : numpy.ndarray, optional
-            Validation target data.
-        sample_weight : numpy.ndarray, optional
+        m_val : numpy.ndarray, optional
+            Not implemented for this model.
+        sample_weight : numpy.ndarray, optional (Not yet implemented!)
             Sample weights for the training data.
-        sample_weight_val : numpy.ndarray, optional
+        sample_weight_val : numpy.ndarray, optional  (Not yet implemented!)
             Sample weights for the validation data.
 
         Returns
@@ -155,72 +222,54 @@ class NeuralNetworkClassifier(BaseEstimator):
             An instance of the classifier.
         """
 
+        if m is not None or m_val is not None:
+            raise NotImplementedError(
+                "Conditional data not implemented for Autoencoder")
+
         assert not (self.epochs is None and not self.early_stopping), (
             "A finite number of epochs must be set if early stopping"
             " is not used!")
 
+        if sample_weight is not None or sample_weight_val is not None:
+            raise NotImplementedError(
+                "Sample weights for autoencoder training not yet implemented!")
+
         # allowing not to provide validation set, just for compatibility with
         # the sklearn API
-        if X_val is None and y_val is None:
+        if X_val is None:
             if self.val_split is None or not (self.val_split > 0.
                                               and self.val_split < 1.):
                 raise ValueError("val_split is needs to be provided and lie "
-                                 "between 0 and 1 in case X_val and y_val are "
+                                 "between 0 and 1 in case X_val is "
                                  "not provided!")
             else:
-                if sample_weight is not None:
-                    (X_train, X_val, y_train, y_val,
-                     sample_weight_train, sample_weight_val
-                     ) = train_test_split(
-                        X, y, sample_weight, test_size=self.val_split,
-                        shuffle=True)
-                else:
-                    X_train, X_val, y_train, y_val = train_test_split(
-                        X, y, test_size=self.val_split, shuffle=True)
+                X_train, X_val = train_test_split(
+                    X, test_size=self.val_split, shuffle=True)
         else:
             X_train = X.copy()
-            y_train = y.copy()
-            if sample_weight is not None:
-                sample_weight_train = sample_weight.copy()
-            else:
-                sample_weight_train = None
 
         if self.clsf_model_path is not None:
             makedirs(self.clsf_model_path, exist_ok=True)
 
         nan_mask = ~np.isnan(X_train).any(axis=1)
         X_train = X_train[nan_mask]
-        y_train = y_train[nan_mask]
-        if sample_weight_train is not None:
-            sample_weight_train = sample_weight_train[nan_mask]
 
         nan_mask = ~np.isnan(X_val).any(axis=1)
         X_val = X_val[nan_mask]
-        y_val = y_val[nan_mask]
-        if sample_weight_val is not None:
-            sample_weight_val = sample_weight_val[nan_mask]
-
-        # deduce class weights for training and validation sets
-        # (move outside class as in sklearn?)
-        if self.use_class_weights:
-            class_weights_train = class_weight.compute_class_weight(
-                'balanced', classes=np.unique(y_train), y=y_train)
-            class_weights_train = dict(enumerate(class_weights_train))
-
-            class_weights_val = class_weight.compute_class_weight(
-                'balanced', classes=np.unique(y_val), y=y_val)
-            class_weights_val = dict(enumerate(class_weights_val))
-        else:
-            class_weights_train = None
-            class_weights_val = None
 
         # build data loader out of numpy arrays
-        train_loader = numpy_to_torch_loader(
-            X_train, y_train, sample_weights=sample_weight_train,
-            batch_size=self.batch_size, shuffle=True, device=self.device)
-        val_loader = numpy_to_torch_loader(
-            X_val, y_val, sample_weights=sample_weight_val,
-            batch_size=self.batch_size, shuffle=True, device=self.device)
+
+        X_train_torch = torch.from_numpy(
+            X).type(torch.FloatTensor).to(self.device)
+        X_train_dataset = torch.utils.data.TensorDataset(X_train_torch)
+        train_loader = torch.utils.data.DataLoader(
+            X_train_dataset, batch_size=self.batch_size, shuffle=True)
+
+        X_val_torch = torch.from_numpy(
+            X).type(torch.FloatTensor).to(self.device)
+        X_val_dataset = torch.utils.data.TensorDataset(X_val_torch)
+        val_loader = torch.utils.data.DataLoader(
+            X_val_dataset, batch_size=self.batch_size, shuffle=True)
 
         # training loop
         self.model.train()
@@ -232,35 +281,12 @@ class NeuralNetworkClassifier(BaseEstimator):
 
             for i, batch in enumerate(train_loader):
 
-                if sample_weight_train is not None:
-                    batch_inputs, batch_labels, batch_weights = batch
-                else:
-                    batch_inputs, batch_labels = batch
-
-                batch_inputs, batch_labels = (batch_inputs.to(self.device),
-                                              batch_labels.to(self.device))
-
-                # translating class weights to sample weights
-                if class_weights_train is not None:
-                    batch_weights_ = class_weight_to_sample_weight(
-                        batch_labels, class_weights_train)
-                    batch_weights_ = batch_weights_.type(
-                        torch.FloatTensor).to(self.device)
-                else:
-                    batch_weights_ = None
-
-                # multiplying in case both class and sample weights are used
-                if batch_weights_ is None:
-                    pass
-                elif sample_weight_train is None:
-                    batch_weights = batch_weights_
-                else:
-                    batch_weights *= batch_weights_
+                batch_inputs = batch[0]
+                batch_inputs = batch_inputs.to(self.device)
 
                 self.optimizer.zero_grad()
                 batch_outputs = self.model(batch_inputs)
-                batch_loss = self.loss(batch_outputs, batch_labels,
-                                       weight=batch_weights)
+                batch_loss = self.loss(batch_outputs, batch_inputs)
                 batch_loss.backward()
                 self.optimizer.step()
                 epoch_train_loss += batch_loss.item()
@@ -268,9 +294,9 @@ class NeuralNetworkClassifier(BaseEstimator):
                     pbar.update(batch_inputs.size(0))
                     pbar.set_description(
                         "Train loss: {:.6f}".format(
-                            epoch_train_loss / (i+1)))
+                            epoch_train_loss / (i + 1)))
 
-            epoch_train_loss /= (i+1)
+            epoch_train_loss /= (i + 1)
             if self.verbose:
                 pbar.close()
 
@@ -278,34 +304,15 @@ class NeuralNetworkClassifier(BaseEstimator):
                 self.model.eval()
                 for i, batch in enumerate(val_loader):
 
-                    if sample_weight_train is not None:
-                        batch_inputs, batch_labels, batch_weights = batch
-                    else:
-                        batch_inputs, batch_labels = batch
+                    batch_inputs = batch[0]
 
-                    batch_inputs, batch_labels = (batch_inputs.to(self.device),
-                                                  batch_labels.to(self.device))
-
-                    if class_weights_val is not None:
-                        batch_weights_ = class_weight_to_sample_weight(
-                            batch_labels, class_weights_val)
-                        batch_weights_ = batch_weights_.type(
-                            torch.FloatTensor).to(self.device)
-                    else:
-                        batch_weights_ = None
-
-                    if batch_weights_ is None:
-                        pass
-                    elif sample_weight_train is None:
-                        batch_weights = batch_weights_
-                    else:
-                        batch_weights *= batch_weights_
+                    batch_inputs = batch_inputs.to(self.device)
 
                     batch_outputs = self.model(batch_inputs)
-                    batch_loss = self.loss(batch_outputs, batch_labels,
-                                           weight=batch_weights)
+                    batch_loss = self.loss(batch_outputs, batch_inputs)
                     epoch_val_loss += batch_loss.item()
-                epoch_val_loss /= (i+1)
+                epoch_val_loss /= (i + 1)
+
             print("Validation loss:", epoch_val_loss)
 
             if epoch == 0:
@@ -337,6 +344,57 @@ class NeuralNetworkClassifier(BaseEstimator):
             self.load_best_model()
 
         return self
+
+    def fit_transform(self, X, m=None, X_val=None, m_val=None):
+        """Trains and then transforms the provided data to the latent space.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Input data.
+        m : numpy.ndarray
+            Not implemented for this model.
+        X_val : numpy.ndarray, optional
+            Validation input data.
+        m_val : numpy.ndarray, optional
+            Not implemented for this model.
+
+        Returns
+        -------
+        Xt : numpy.ndarray
+            Latent space representation of the input data.
+        """
+        return self.fit(X, m=m, X_val=X_val, m_val=m_val).transform(X, m=m)
+
+    def inverse_transform(self, Xt, m=None):
+        raise NotImplementedError(
+            "inverse_transform not implemented")
+
+    def log_jacobian_determinant(self, X, m=None):
+        raise NotImplementedError(
+            "log_jacobian_determinant not implemented")
+
+    def jacobian_determinant(self, X, m=None):
+        raise NotImplementedError(
+            "jacobian_determinant not implemented")
+
+    def inverse_jacobian_determinant(self, X, m=None):
+        raise NotImplementedError(
+            "inverse_jacobian_determinant not implemented")
+
+    def inverse_log_jacobian_determinant(self, X, m=None):
+        raise NotImplementedError(
+            "inverse_log_jacobian_determinant not implemented")
+
+    def sample(self, n_samples=1, m=None):
+        raise NotImplementedError(
+            "sample not implemented")
+
+    def score_samples(self, X, m=None):
+        raise NotImplementedError("score_samples not implemented")
+
+    def score(self, X, m=None):
+        raise NotImplementedError("score not implemented")
 
     def load_best_model(self):
         """Loads the best model state from the provided save_path.
@@ -396,69 +454,3 @@ class NeuralNetworkClassifier(BaseEstimator):
 
     def _model_path(self, epoch):
         return join(self.clsf_model_path, f"CLSF_epoch_{epoch}.par")
-
-
-def numpy_to_torch_loader(X, y, sample_weights=None,
-                          batch_size=128, shuffle=True,
-                          device=torch.device("cpu")):
-    """Builds a torch DataLoader from numpy arrays.
-
-    Parameters
-    ----------
-    X : numpy.ndarray
-        Input data.
-    y : numpy.ndarray
-        Target data.
-    sample_weights : numpy.ndarray, optional
-        Sample weights.
-    batch_size : int, default=128
-        Batch size.
-    shuffle : bool, default=True
-        Whether to shuffle the data.
-    device : torch.device, default=torch.device("cpu")
-        Device to use.
-
-    Returns
-    -------
-    dataloader : torch.utils.data.DataLoader
-        DataLoader for the provided data.
-    """
-
-    X_torch = torch.from_numpy(
-        X).type(torch.FloatTensor).to(device)
-    y_torch = torch.from_numpy(
-        y).type(torch.FloatTensor).to(device).reshape(-1, 1)
-
-    if sample_weights is not None:
-        sample_weights_torch = torch.from_numpy(
-            sample_weights).type(torch.FloatTensor).to(device)
-        dataset = torch.utils.data.TensorDataset(X_torch, y_torch,
-                                                 sample_weights_torch)
-    else:
-        dataset = torch.utils.data.TensorDataset(X_torch, y_torch)
-
-    dataloader = torch.utils.data.DataLoader(
-        dataset, batch_size=batch_size, shuffle=shuffle)
-
-    return dataloader
-
-
-def class_weight_to_sample_weight(y, class_weights):
-    """Converts class weights to sample weights.
-
-    Parameters
-    ----------
-    y : torch.Tensor
-        Target data.
-    class_weights : dict
-        Class weights.
-
-    Returns
-    -------
-    sample_weights : torch.Tensor
-        Sample weights.
-    """
-
-    y_cpu = y.to(torch.device("cpu"), copy=True)
-    return ((torch.ones(y_cpu.shape) - y_cpu)
-            * class_weights[0] + y_cpu*class_weights[1])

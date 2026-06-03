@@ -1,7 +1,5 @@
 # sk_cathode
 
-This is a copy of [sk_cathode](https://github.com/OzAmram/sk_cathode) for [ML4FP 2026](https://indico.global/event/17000/timetable/?view=standard#13-anomaly-detection-lecture-t). NERSC Jupyterhub setup instructions can be found [here](https://docs.google.com/presentation/d/1X1Z2Mks9atCR2TBAHuqNWVpVjoRuYsBKHb-UVZgwQ3o/edit?slide=id.g3e5cad0e7d6_0_0#slide=id.g3e5cad0e7d6_0_0).
-
 ## Core idea
 
 This (work-in-progress) repo aims to illustrate how to deploy anomaly detection models such as [CATHODE](https://arxiv.org/abs/2109.00546) and [LaCATHODE](https://arxiv.org/abs/2210.14924) by hiding technical implementation details behind a scikit-learn-like API.
@@ -12,15 +10,30 @@ The primary goal is to make these anomaly detection methods more accessible and 
 
 ## Demos
 
-- `demos/weak_supervision.ipynb` gives a brief overview of the core idea of weak supervision for anomaly detection. It defines the so-called Idealized Anomaly Detector and compares it to a fully supervised approach. It also features some slim code to compare methods in terms of median performance with 68% confidence intervals.
+- `demos/weak_supervision.ipynb` gives a brief overview of the core idea of weak supervision for anomaly detection, using a particle physics dataset. It defines the so-called Idealized Anomaly Detector and compares it to a fully supervised approach. It also features some slim code to compare methods in terms of median performance with 68% confidence intervals.
+- `demos/weak_supervision_gauss_example.ipynb` illustrates the core idea of weak supervision with a Gaussian toy dataset and shows at which point it performs similarly to a fully supervised classifier.
 - `demos/cathode_walkthrough.ipynb` simply describes the basic working principle of the CATHODE method for weakly supervised anomaly detection on the LHCO example dataset.
 - `demos/lacathode_walkthrough.ipynb` touches the issue of background sculpting and guides through the working principle of LaCATHODE to mitigate this in (CATHODE-based) weak supervision.
 - `demos/anode_walkthrough.ipynb` gives a brief overview of the ANODE method (CATHODE's predecessor) for anomaly detection, which works analogous to weak supervision but constructs an explicit likelihood ratio using normalizing flows instead of training a classifier.
 - `demos/tree_classifier.ipynb` discusses the challenge of uninformative features in weakly supervised anomaly detection and demonstrates substantial improvement by using ensembles of boosted decision trees instead of neural networks.
+- `demos/autoencoder_gauss.ipynb` introduces a different paradigm for anomaly detection, namely outlier detection based on autoencoders. The working principle is illustrated on a Gaussian toy dataset.
 
 ## Installation
 
-Just clone via the usual way. The `requirements.txt` covers the necessary libraries to run the default demo notebook.
+Just clone via the usual way, for example:
+
+```bash
+git clone git@github.com:uhh-pd-ml/sk_cathode.git
+cd sk_cathode
+```
+
+The `requirements.txt` covers the necessary libraries to run the default demo notebook. For example, one can create a fresh conda environment and install the dependencies with:
+
+```bash
+conda create -n "sk_cathode_env" python=3.9.7
+conda activate sk_cathode_env
+pip install -r requirements.txt
+```
 
 In order to run the Normalizing Flow with Pyro backend, one further needs to install [Pyro](https://pyro.ai/). For the Conditional Flow Matching generative model, one needs to install [torchdyn](https://torchdyn.org/). The `requirements_full.txt` includes these additional dependencies.
 
@@ -77,6 +90,7 @@ Below is a brief overview of the building blocks provided in `sk_cathode`, out o
 - `sk_cathode.generative_models.conditional_normalizing_flow_pyro.ConditionalNormalizingFlow`: A conditional normalizing flow model  implemented via the Pyro library.
 - `sk_cathode.generative_models.conditional_normalizing_flow_nflows.ConditionalNormalizingFlow`: A conditional normalizing flow model  implemented via nFlows.
 - `sk_cathode.generative_models.conditional_flow_matching.ConditionalFlowMatching`: A conditional flow matching model  implemented via PyTorch and the torchdyn ODE solver.
+- `sk_cathode.generative_models.autoencoder.Autoencoder`: A simple autoencoder based on a fully connected neural network, implemented in PyTorch.
 
 ### Classifier models
 
@@ -101,6 +115,7 @@ Below is a brief overview of the building blocks provided in `sk_cathode`, out o
 - `sk_cathode.utils.evaluation_functions.hists_2d`: Function to plot 2D correlation histograms.
 - `sk_cathode.utils.evaluation_functions.pulls_2d`: Function to plot 2D pulls between two multidimensional distributions in pairs.
 - `sk_cathode.utils.evaluation_functions.preds_2d`: Function to plot model predictions as a function of the input features pair-wise in 2D.
+- `sk_cathode.utils.evaluation_functions.plot_roc_and_sic`: Quick function to plot both the ROC and the SIC curve.
 
 ## Contributing
 
