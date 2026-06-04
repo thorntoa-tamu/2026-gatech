@@ -21,6 +21,7 @@ import argparse
 import math
 from collections import defaultdict
 from pathlib import Path
+from bisect import bisect_right
 
 import ROOT
 import h5py
@@ -142,7 +143,10 @@ def process_file(input_path, args):
     ragged_raw_time = []
     ragged_raw_x = []
     ragged_raw_y = []
-    ragged_raw_z = []
+    ragged_raw_layer = []
+
+    _layer_edges = [29, 32, 50, 73, 101]  
+    _layer_values = [0.0, 1.0, 2.0, 3.0, 4.0] 
 
     has_truth = not args.no_truth
     truth_labels = []
@@ -189,8 +193,9 @@ def process_file(input_path, args):
                 raw_py = np.array(
                     [sim_hits[j].position.y for j in sim_indices], dtype=np.float32
                 )
-                raw_pz = np.array(
-                    [sim_hits[j].position.z for j in sim_indices], dtype=np.float32
+                raw_layer = np.array(
+                    [_layer_values[bisect_right(_layer_edges, r) - 1] for j in sim_indices
+                        ], dtype=np.float32
                 )
 
                 npix = len(sim_indices)
@@ -224,7 +229,7 @@ def process_file(input_path, args):
                 ragged_raw_time.append(raw_t)
                 ragged_raw_x.append(raw_px)
                 ragged_raw_y.append(raw_py)
-                ragged_raw_z.append(raw_pz)
+                ragged_raw_layer.append(raw_layer)
 
                 # Truth label via SimTrackerHit quality bit 31 (isOverlay).
                 # Matches PixelHitBDTTestAlg logic: label = 1 (signal) if
@@ -244,10 +249,10 @@ def process_file(input_path, args):
 
     n_clusters = len(acc["cluster_energy"])
     print(f"Total clusters extracted: {n_clusters}")
-    return acc, ragged_raw_energy, ragged_raw_time, ragged_raw_x, ragged_raw_y, ragged_raw_z, truth_labels, has_truth
+    return acc, ragged_raw_energy, ragged_raw_time, ragged_raw_x, ragged_raw_y, ragged_raw_layer, truth_labels, has_truth
 
 
-def write_hdf5(outpath, acc, raw_e, raw_t, raw_x, raw_y, raw_z, truth_labels, has_truth):
+def write_hdf5(outpath, acc, raw_e, raw_t, raw_x, raw_y, raw_layer, truth_labels, has_truth):
     n = len(acc["cluster_energy"])
     if n == 0:
         print("No clusters to write.")
@@ -269,7 +274,7 @@ def write_hdf5(outpath, acc, raw_e, raw_t, raw_x, raw_y, raw_z, truth_labels, ha
             ("time", raw_t),
             ("x", raw_x),
             ("y", raw_y),
-            ("z", raw_z),
+            ("layer", raw_layer),
         ]:
             ds = raw_grp.create_dataset(name, shape=(n,), dtype=vlen_f32)
             for i, arr in enumerate(data):
@@ -292,25 +297,25 @@ def main():
 
     # Accumulate results across all input files
     merged_acc = defaultdict(list)
-    merged_raw_e, merged_raw_t, merged_raw_x, merged_raw_y, merged_raw_z = [], [], [], [], []
+    merged_raw_e, merged_raw_t, merged_raw_x, merged_raw_y, merged_raw_layer = [], [], [], [], []
     merged_truth = []
     has_truth = not args.no_truth
 
     for i_file, input_path in enumerate(args.i):
         print(f"\n--- File {i_file + 1}/{len(args.i)}: {input_path} ---")
-        acc, raw_e, raw_t, raw_x, raw_y, raw_z, truth_labels, _ = process_file(input_path, args)
+        acc, raw_e, raw_t, raw_x, raw_y, raw_layer, truth_labels, _ = process_file(input_path, args)
         for k, v in acc.items():
             merged_acc[k].extend(v)
         merged_raw_e.extend(raw_e)
         merged_raw_t.extend(raw_t)
         merged_raw_x.extend(raw_x)
         merged_raw_y.extend(raw_y)
-        merged_raw_z.extend(raw_z)
+        merged_raw_layer.extend(raw_layer)
         merged_truth.extend(truth_labels)
 
     print(f"\nTotal clusters from all files: {len(merged_acc['cluster_energy'])}")
     write_hdf5(args.o, merged_acc, merged_raw_e, merged_raw_t,
-               merged_raw_x, merged_raw_y, merged_raw_z, merged_truth, has_truth)
+               merged_raw_x, merged_raw_y, merged_raw_layer, merged_truth, has_truth)
 
 
 if __name__ == "__main__":
