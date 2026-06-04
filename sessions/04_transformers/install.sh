@@ -33,7 +33,6 @@ python -m pip install --upgrade pip
 
 echo ">> Installing dependencies"
 python -m pip install \
-    "torch>=2.10" \
     numpy \
     scipy \
     matplotlib \
