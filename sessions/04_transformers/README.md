@@ -99,13 +99,6 @@ jupyter lab          # or: jupyter notebook
 
 then open `tutorial/01_...`, `02_...`, `03_...` in order and run all cells.
 
-To execute a notebook headless (e.g. to check it runs end-to-end):
-
-```bash
-cd tutorial
-../.venv/bin/jupyter nbconvert --to notebook --execute \
-  --output 01_executed.ipynb 01_transformers_and_self_attention.ipynb
-```
 
 ### Notebook 3 specifics
 
