@@ -1,0 +1,8 @@
+# Instructor-only files — not for students.
+prepare_data.py
+plotting.ipynb
+evaluate.py
+solution.ipynb
+secret/
+out/
+submission.csv

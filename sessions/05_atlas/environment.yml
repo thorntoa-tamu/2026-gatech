@@ -1,0 +1,21 @@
+name: atlas
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - ipykernel
+  - matplotlib
+  - uproot
+  - fsspec-xrootd
+  - aiohttp
+  - pandas
+  - pytables
+  - vector
+  - pyarrow
+  - fastparquet
+  - joblib
+  - scikit-learn
+  - pytorch
+  - pip
+  - pip:
+      - atlasopenmagic
